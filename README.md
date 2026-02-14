@@ -16,7 +16,3 @@ Página HTML interactiva y responsive para usar en celular y computadora.
 ```text
 https://TU-USUARIO.github.io/NOMBRE-REPO/
 ```
-
-## Créditos de imágenes
-
-Las imágenes/GIFs de Dudu y Bubu se cargan desde Tenor usando URLs públicas en internet.
