@@ -92,7 +92,7 @@
     }
 
     .question {
-      font-size: clamp(1rem, 2.7vw, 1.15rem);
+      font-size: clamp(1.25rem, 3.4vw, 1.6rem);
       min-height: 56px;
       font-weight: 700;
       color: #a00043;
@@ -140,6 +140,15 @@
       padding: .8rem 1.2rem;
       font-size: 1rem;
       position: static;
+    }
+
+    .step-gift {
+      text-align: center;
+      min-height: 58vh;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: .8rem;
     }
 
     #giftBtn {
@@ -205,7 +214,7 @@
       <p id="dynamicText" class="question">Prometo más risas, más abrazos y más planes bonitos 💕</p>
 
       <figure class="media" id="mediaStep1">
-        <img id="imageMain" loading="lazy" referrerpolicy="no-referrer" alt="Dudu y Bubu abrazándose" src="https://media.tenor.com/V3Qm5j6oQ7UAAAAC/dudu-bubu-love.gif">
+        <img id="imageMain" loading="lazy" alt="Dudu y Bubu abrazándose" src="assets/dudu-bubu-love.svg">
       </figure>
       <p class="caption">Dudu y Bubu mode: activado 🐼🐻</p>
 
@@ -215,7 +224,7 @@
       </div>
     </section>
 
-    <section id="step2" class="screen" aria-labelledby="title2">
+    <section id="step2" class="screen step-gift" aria-labelledby="title2">
       <span class="badge">🎁 Sorpresa desbloqueada</span>
       <h1 id="title2">¡Sabía que dirías que sí! 😍</h1>
       <p>Toca el regalo para abrir el premio especial de Dudu y Bubu.</p>
@@ -226,7 +235,7 @@
       <span class="badge">💋 Final feliz</span>
       <h1 id="title3">¡Te amo muchísimo! 💖</h1>
       <figure class="media">
-        <img loading="lazy" referrerpolicy="no-referrer" alt="Dudu y Bubu mandando besos" src="https://media.tenor.com/s8h9kQz6J0sAAAAC/dudu-bubu-kiss.gif">
+        <img loading="lazy" alt="Dudu y Bubu mandando besos" src="assets/dudu-bubu-kiss.svg">
       </figure>
       <p class="question">Mil millones de besitos para ti ✨💋</p>
     </section>
@@ -238,8 +247,7 @@
     </div>
 
     <p class="sources">
-      Imágenes tomadas de internet (Tenor):
-      <a href="https://tenor.com/search/dudu-and-bubu-gifs" target="_blank" rel="noopener noreferrer">buscar más Dudu y Bubu</a>.
+      Imágenes de Dudu y Bubu guardadas localmente en <code>/assets</code> para que carguen más rápido.
       <br>
       Para publicar en GitHub Pages: crea un repositorio, sube este <code>index.html</code> y en <b>Settings → Pages</b> elige la rama principal.
     </p>
@@ -255,10 +263,10 @@
     ];
 
     const images = [
-      'https://media.tenor.com/V3Qm5j6oQ7UAAAAC/dudu-bubu-love.gif',
-      'https://media.tenor.com/6qQ8l6Q5zjYAAAAC/dudu-bubu-cute.gif',
-      'https://media.tenor.com/n8a4iWfM6FUAAAAC/dudu-bubu-hug.gif',
-      'https://media.tenor.com/t4f6Wce4Q9QAAAAC/dudu-bubu-heart.gif'
+      'assets/dudu-bubu-love.svg',
+      'assets/dudu-bubu-cute.svg',
+      'assets/dudu-bubu-hug.svg',
+      'assets/dudu-bubu-heart.svg'
     ];
 
     const step1 = document.getElementById('step1');
