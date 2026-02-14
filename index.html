@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi amor ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
+            height: 100vh; background-color: #ffe5ec; font-family: 'Comic Sans MS', sans-serif;
+            overflow: hidden;
+        }
+        .card {
+            background: white; padding: 30px; border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.3);
+            text-align: center; max-width: 400px; width: 85%; position: relative;
+        }
+        h1 { color: #ff0a54; font-size: 1.5rem; }
+        .gif-box { 
+            width: 100%; height: 200px; margin: 15px 0; 
+            display: flex; justify-content: center; align-items: center;
+            background-color: #fffafb; border-radius: 20px;
+            font-size: 4rem; /* Por si falla la imagen, se ve un emoji grande */
+        }
+        .gif-box img { max-height: 100%; border-radius: 15px; }
+        #frase { color: #ff477e; font-weight: bold; min-height: 50px; }
+        
+        .btn-group { display: flex; justify-content: center; align-items: center; gap: 15px; min-height: 80px; }
+        #btn-si {
+            background-color: #ff0a54; color: white; border: none; padding: 15px 30px;
+            font-size: 1.4rem; font-weight: bold; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 8px 15px rgba(255, 10, 84, 0.3); animation: latido 1.2s infinite;
+        }
+        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        
+        #btn-no { background-color: #acb1b6; color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; }
+        
+        .hidden { display: none !important; }
+        #regalo-btn { font-size: 5rem; cursor: pointer; animation: bounce 1s infinite; display: block; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    </style>
+</head>
+<body>
+
+    <!-- PASO 1: PREGUNTA -->
+    <div class="card" id="paso1">
+        <h1>¿Quieres seguir saliendo conmigo? 🥺</h1>
+        <p id="frase">¡Dime que sí! ❤️</p>
+        <div class="gif-box" id="box1">
+            <img id="img1" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYybmN2M3p2eXo0eHpsMnd4eXp5eHpsMnd4eXp5eHpsMnd4eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/L4lvBpHFmTCVQQfL5o/giphy.gif" onerror="this.style.display='none'; document.getElementById('box1').innerHTML='🐼'">
+        </div>
+        <div class="btn-group">
+            <button id="btn-si">¡SÍ! ❤️</button>
+            <button id="btn-no">No</button>
+        </div>
+    </div>
+
+    <!-- PASO 2: EL REGALO -->
+    <div class="card hidden" id="paso2">
+        <h1>¡SABÍA QUE DIRÍAS QUE SÍ! 😍</h1>
+        <p>Tengo algo para ti... ¡Toca el regalo!</p>
+        <div class="gif-box">
+            <span id="regalo-btn">🎁</span>
+        </div>
+    </div>
+
+    <!-- PASO 3: BESOS FINALES -->
+    <div class="card hidden" id="paso3">
+        <h1 style="color: #ff0a54;">¡TE AMO MUCHO! ❤️</h1>
+        <div class="gif-box" id="box3">
+            <img id="img3" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXN6emh2eHpsMnd4eXp5eHpsMnd4eXp5eHpsMnd4eXp5eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v96Y8p364H3O0/giphy.gif" onerror="this.style.display='none'; document.getElementById('box3').innerHTML='💋'">
+        </div>
+        <p style="font-size: 1.3rem; color: #ff0a54; font-weight: bold;">
+            ¡Te doy mil millones de besos! 💋✨
+        </p>
+    </div>
+
+    <script>
+        const btnNo = document.getElementById('btn-no');
+        const btnSi = document.getElementById('btn-si');
+        const img1 = document.getElementById('img1');
+        const frase = document.getElementById('frase');
+        const regalo = document.getElementById('regalo-btn');
+
+        const frases = [
+            "¿Segura? Piénsalo bien... 🥺",
+            "¡Bubu se pondrá muy triste! 😭",
+            "¡Dudu tiene muchos besos para ti! 🐼",
+            "¡No me dejes solito! 🥺",
+            "¡Te compraré un helado! 🍦",
+            "¡Iremos a ver pelis! 🍿",
+            "¿Ni un poquito de amor? 💔",
+            "¡Mira mi carita! 🥺",
+            "¡Te voy a extrañar mucho! 😭",
+            "¡No acepto un NO! 😤",
+            "¡Te prometo mil abrazos! 🤗",
+            "¡Eres mi personita favorita! ✨",
+            "¡Dudu y Bubu están llorando! 😭",
+            "¡Habrá muchas sorpresas! 🎁",
+            "¡Andale, por favor! ❤️",
+            "¡Te amo infinitamente! 💖",
+            "¡Ya casi le das al sí! 😍",
+            "¡Piénsalo otra vez! 🧐",
+            "¡No te arrepentirás! ✨",
+            "¡Eres todo para mí! ❤️",
+            "¡Di que síiiii! 🥺"
+        ];
+
+        // Giphy IDs que suelen ser más estables
+        const gifs = [
+            "L4lvBpHFmTCVQQfL5o", "T2p9M9V8R9XyM", "v96Y8p364H3O0", "L4lvBpHFmTCVQQfL5o", "T2p9M9V8R9XyM"
+        ];
+
+        let i = 0;
+        let siSize = 1.4;
+
+        function moverNo() {
+            btnNo.style.position = "fixed";
+            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
+            btnNo.style.left = x + "px";
+            btnNo.style.top = y + "px";
+
+            // Cambiar frase
+            frase.innerText = frases[i % frases.length];
+            
+            // Cambiar GIF (alternando entre IDs estables)
+            img1.src = `https://media.giphy.com/media/${gifs[i % gifs.length]}/giphy.gif`;
+            img1.style.display = 'block';
+
+            i++;
+            siSize += 0.2;
+            btnSi.style.fontSize = siSize + "rem";
+        }
+
+        btnNo.addEventListener('mouseover', moverNo);
+        btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); moverNo(); });
+
+        btnSi.addEventListener('click', () => {
+            document.getElementById('paso1').classList.add('hidden');
+            document.getElementById('paso2').classList.remove('hidden');
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        });
+
+        regalo.addEventListener('click', () => {
+            document.getElementById('paso2').classList.add('hidden');
+            document.getElementById('paso3').classList.remove('hidden');
+            
+            // Lluvia de corazones
+            setInterval(() => {
+                confetti({
+                    particleCount: 7, angle: 60, spread: 55, origin: { x: 0 },
+                    colors: ['#ff0a54', '#ff477e']
+                });
+                confetti({
+                    particleCount: 7, angle: 120, spread: 55, origin: { x: 1 },
+                    colors: ['#ff0a54', '#ff477e']
+                });
+            }, 400);
+        });
+    </script>
+</body>
+</html>
