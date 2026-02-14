@@ -1,164 +1,340 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi amor ❤️</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <style>
-        body {
-            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
-            height: 100vh; background-color: #ffe5ec; font-family: 'Comic Sans MS', sans-serif;
-            overflow: hidden;
-        }
-        .card {
-            background: white; padding: 30px; border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.3);
-            text-align: center; max-width: 400px; width: 85%; position: relative;
-        }
-        h1 { color: #ff0a54; font-size: 1.5rem; }
-        .gif-box { 
-            width: 100%; height: 200px; margin: 15px 0; 
-            display: flex; justify-content: center; align-items: center;
-            background-color: #fffafb; border-radius: 20px;
-            font-size: 4rem; /* Por si falla la imagen, se ve un emoji grande */
-        }
-        .gif-box img { max-height: 100%; border-radius: 15px; }
-        #frase { color: #ff477e; font-weight: bold; min-height: 50px; }
-        
-        .btn-group { display: flex; justify-content: center; align-items: center; gap: 15px; min-height: 80px; }
-        #btn-si {
-            background-color: #ff0a54; color: white; border: none; padding: 15px 30px;
-            font-size: 1.4rem; font-weight: bold; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 8px 15px rgba(255, 10, 84, 0.3); animation: latido 1.2s infinite;
-        }
-        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        
-        #btn-no { background-color: #acb1b6; color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; }
-        
-        .hidden { display: none !important; }
-        #regalo-btn { font-size: 5rem; cursor: pointer; animation: bounce 1s infinite; display: block; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Carta interactiva y divertida de Dudu y Bubu para San Valentín.">
+  <title>Dudu & Bubu 💖 | Carta interactiva</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg-start: #ffe6f0;
+      --bg-end: #fff6fb;
+      --card: #ffffff;
+      --text: #49111c;
+      --primary: #ff2e75;
+      --primary-dark: #d10c55;
+      --secondary: #6c757d;
+      --shadow: 0 14px 30px rgba(255, 46, 117, 0.20);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Nunito", "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background: linear-gradient(145deg, var(--bg-start), var(--bg-end));
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+
+    .app {
+      width: min(680px, 100%);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(1rem, 3vw, 2rem);
+      position: relative;
+      overflow: clip;
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: .4rem;
+      align-items: center;
+      font-size: .85rem;
+      padding: .45rem .8rem;
+      border-radius: 999px;
+      background: #ffe1ec;
+      color: #a90f4b;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: .8rem 0 .6rem;
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      line-height: 1.2;
+      color: #7a0031;
+      text-wrap: balance;
+    }
+
+    p { margin: .35rem 0; line-height: 1.45; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .media {
+      margin: .9rem 0;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff8fc;
+      border: 1px solid #ffd4e5;
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+    }
+
+    .media img {
+      width: 100%;
+      height: min(52vw, 320px);
+      object-fit: cover;
+      display: block;
+    }
+
+    .caption {
+      font-size: .85rem;
+      color: #8c3564;
+      margin-top: -.2rem;
+    }
+
+    .question {
+      font-size: clamp(1rem, 2.7vw, 1.15rem);
+      min-height: 56px;
+      font-weight: 700;
+      color: #a00043;
+    }
+
+    .btn-row {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      min-height: 84px;
+      flex-wrap: wrap;
+      margin-top: .8rem;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible {
+      outline: 3px dashed #620026;
+      outline-offset: 3px;
+    }
+
+    #btn-si {
+      background: var(--primary);
+      color: #fff;
+      padding: .9rem 1.6rem;
+      font-size: 1.15rem;
+      box-shadow: 0 10px 18px rgba(255, 46, 117, 0.35);
+      animation: heartbeat 1.2s infinite;
+    }
+
+    #btn-si:hover { transform: translateY(-2px); background: var(--primary-dark); }
+
+    #btn-no {
+      background: var(--secondary);
+      color: #fff;
+      padding: .8rem 1.2rem;
+      font-size: 1rem;
+      position: static;
+    }
+
+    #giftBtn {
+      width: min(220px, 55vw);
+      aspect-ratio: 1 / 1;
+      border-radius: 20px;
+      border: 2px dashed #ffc2d9;
+      background: #fff0f6;
+      font-size: clamp(3rem, 11vw, 5rem);
+      animation: bounce 1s infinite;
+    }
+
+    .progress {
+      display: flex;
+      gap: .5rem;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #ffbdd3;
+    }
+
+    .dot.active { background: #e80058; }
+
+    .sources {
+      margin-top: 1rem;
+      font-size: .8rem;
+      color: #694352;
+    }
+
+    .sources a { color: #9a0043; }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+
+    @media (max-width: 420px) {
+      .app { padding: 1rem; }
+      .btn-row { min-height: 110px; }
+      #btn-no { font-size: .95rem; }
+    }
+  </style>
 </head>
 <body>
+  <main class="app" aria-live="polite">
+    <section id="step1" class="screen active" aria-labelledby="title1">
+      <span class="badge">💘 Carta interactiva</span>
+      <h1 id="title1">¿Quieres seguir saliendo conmigo? 🥺</h1>
+      <p id="dynamicText" class="question">Prometo más risas, más abrazos y más planes bonitos 💕</p>
 
-    <!-- PASO 1: PREGUNTA -->
-    <div class="card" id="paso1">
-        <h1>¿Quieres seguir saliendo conmigo? 🥺</h1>
-        <p id="frase">¡Dime que sí! ❤️</p>
-        <div class="gif-box" id="box1">
-            <img id="img1" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYybmN2M3p2eXo0eHpsMnd4eXp5eHpsMnd4eXp5eHpsMnd4eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/L4lvBpHFmTCVQQfL5o/giphy.gif" onerror="this.style.display='none'; document.getElementById('box1').innerHTML='🐼'">
-        </div>
-        <div class="btn-group">
-            <button id="btn-si">¡SÍ! ❤️</button>
-            <button id="btn-no">No</button>
-        </div>
+      <figure class="media" id="mediaStep1">
+        <img id="imageMain" loading="lazy" referrerpolicy="no-referrer" alt="Dudu y Bubu abrazándose" src="https://media.tenor.com/V3Qm5j6oQ7UAAAAC/dudu-bubu-love.gif">
+      </figure>
+      <p class="caption">Dudu y Bubu mode: activado 🐼🐻</p>
+
+      <div class="btn-row" id="btnArea">
+        <button id="btn-si" type="button" aria-label="Responder que sí">¡SÍ, OBVIO! ❤️</button>
+        <button id="btn-no" type="button" aria-label="Responder que no">No 😶</button>
+      </div>
+    </section>
+
+    <section id="step2" class="screen" aria-labelledby="title2">
+      <span class="badge">🎁 Sorpresa desbloqueada</span>
+      <h1 id="title2">¡Sabía que dirías que sí! 😍</h1>
+      <p>Toca el regalo para abrir el premio especial de Dudu y Bubu.</p>
+      <button id="giftBtn" type="button" aria-label="Abrir regalo">🎁</button>
+    </section>
+
+    <section id="step3" class="screen" aria-labelledby="title3">
+      <span class="badge">💋 Final feliz</span>
+      <h1 id="title3">¡Te amo muchísimo! 💖</h1>
+      <figure class="media">
+        <img loading="lazy" referrerpolicy="no-referrer" alt="Dudu y Bubu mandando besos" src="https://media.tenor.com/s8h9kQz6J0sAAAAC/dudu-bubu-kiss.gif">
+      </figure>
+      <p class="question">Mil millones de besitos para ti ✨💋</p>
+    </section>
+
+    <div class="progress" aria-hidden="true">
+      <span class="dot active" data-dot="0"></span>
+      <span class="dot" data-dot="1"></span>
+      <span class="dot" data-dot="2"></span>
     </div>
 
-    <!-- PASO 2: EL REGALO -->
-    <div class="card hidden" id="paso2">
-        <h1>¡SABÍA QUE DIRÍAS QUE SÍ! 😍</h1>
-        <p>Tengo algo para ti... ¡Toca el regalo!</p>
-        <div class="gif-box">
-            <span id="regalo-btn">🎁</span>
-        </div>
-    </div>
+    <p class="sources">
+      Imágenes tomadas de internet (Tenor):
+      <a href="https://tenor.com/search/dudu-and-bubu-gifs" target="_blank" rel="noopener noreferrer">buscar más Dudu y Bubu</a>.
+      <br>
+      Para publicar en GitHub Pages: crea un repositorio, sube este <code>index.html</code> y en <b>Settings → Pages</b> elige la rama principal.
+    </p>
+  </main>
 
-    <!-- PASO 3: BESOS FINALES -->
-    <div class="card hidden" id="paso3">
-        <h1 style="color: #ff0a54;">¡TE AMO MUCHO! ❤️</h1>
-        <div class="gif-box" id="box3">
-            <img id="img3" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXN6emh2eHpsMnd4eXp5eHpsMnd4eXp5eHpsMnd4eXp5eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v96Y8p364H3O0/giphy.gif" onerror="this.style.display='none'; document.getElementById('box3').innerHTML='💋'">
-        </div>
-        <p style="font-size: 1.3rem; color: #ff0a54; font-weight: bold;">
-            ¡Te doy mil millones de besos! 💋✨
-        </p>
-    </div>
+  <script>
+    const phrases = [
+      '¿Segura? Mira esa carita tierna de Dudu 🥺',
+      'Bubu ya preparó plan de pelis + cobija 🍿',
+      'Prometo helado, abrazos y cero dramas 🍦',
+      'Última oferta: besos infinitos y memes diarios 😘',
+      'Vamos, di sí… que ya tengo playlist romántica 🎶'
+    ];
 
-    <script>
-        const btnNo = document.getElementById('btn-no');
-        const btnSi = document.getElementById('btn-si');
-        const img1 = document.getElementById('img1');
-        const frase = document.getElementById('frase');
-        const regalo = document.getElementById('regalo-btn');
+    const images = [
+      'https://media.tenor.com/V3Qm5j6oQ7UAAAAC/dudu-bubu-love.gif',
+      'https://media.tenor.com/6qQ8l6Q5zjYAAAAC/dudu-bubu-cute.gif',
+      'https://media.tenor.com/n8a4iWfM6FUAAAAC/dudu-bubu-hug.gif',
+      'https://media.tenor.com/t4f6Wce4Q9QAAAAC/dudu-bubu-heart.gif'
+    ];
 
-        const frases = [
-            "¿Segura? Piénsalo bien... 🥺",
-            "¡Bubu se pondrá muy triste! 😭",
-            "¡Dudu tiene muchos besos para ti! 🐼",
-            "¡No me dejes solito! 🥺",
-            "¡Te compraré un helado! 🍦",
-            "¡Iremos a ver pelis! 🍿",
-            "¿Ni un poquito de amor? 💔",
-            "¡Mira mi carita! 🥺",
-            "¡Te voy a extrañar mucho! 😭",
-            "¡No acepto un NO! 😤",
-            "¡Te prometo mil abrazos! 🤗",
-            "¡Eres mi personita favorita! ✨",
-            "¡Dudu y Bubu están llorando! 😭",
-            "¡Habrá muchas sorpresas! 🎁",
-            "¡Andale, por favor! ❤️",
-            "¡Te amo infinitamente! 💖",
-            "¡Ya casi le das al sí! 😍",
-            "¡Piénsalo otra vez! 🧐",
-            "¡No te arrepentirás! ✨",
-            "¡Eres todo para mí! ❤️",
-            "¡Di que síiiii! 🥺"
-        ];
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const dots = [...document.querySelectorAll('.dot')];
+    const btnNo = document.getElementById('btn-no');
+    const btnSi = document.getElementById('btn-si');
+    const dynamicText = document.getElementById('dynamicText');
+    const imageMain = document.getElementById('imageMain');
+    const giftBtn = document.getElementById('giftBtn');
 
-        // Giphy IDs que suelen ser más estables
-        const gifs = [
-            "L4lvBpHFmTCVQQfL5o", "T2p9M9V8R9XyM", "v96Y8p364H3O0", "L4lvBpHFmTCVQQfL5o", "T2p9M9V8R9XyM"
-        ];
+    let index = 0;
+    let yesScale = 1;
+    let confettiLoop;
 
-        let i = 0;
-        let siSize = 1.4;
+    function setStep(step) {
+      [step1, step2, step3].forEach((node, i) => node.classList.toggle('active', i === step));
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === step));
+    }
 
-        function moverNo() {
-            btnNo.style.position = "fixed";
-            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
-            btnNo.style.left = x + "px";
-            btnNo.style.top = y + "px";
+    function moveNoButton() {
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      btnNo.style.position = 'fixed';
+      const maxX = Math.max(window.innerWidth - btnNo.offsetWidth - 8, 0);
+      const maxY = Math.max(window.innerHeight - btnNo.offsetHeight - 8, 0);
+      btnNo.style.left = `${Math.random() * maxX}px`;
+      btnNo.style.top = `${Math.random() * maxY}px`;
 
-            // Cambiar frase
-            frase.innerText = frases[i % frases.length];
-            
-            // Cambiar GIF (alternando entre IDs estables)
-            img1.src = `https://media.giphy.com/media/${gifs[i % gifs.length]}/giphy.gif`;
-            img1.style.display = 'block';
+      dynamicText.textContent = phrases[index % phrases.length];
+      imageMain.src = images[index % images.length];
+      imageMain.alt = `Dudu y Bubu en modo tierno #${(index % images.length) + 1}`;
 
-            i++;
-            siSize += 0.2;
-            btnSi.style.fontSize = siSize + "rem";
-        }
+      yesScale = Math.min(yesScale + (isMobile ? 0.08 : 0.13), 1.9);
+      btnSi.style.transform = `scale(${yesScale})`;
+      index += 1;
+    }
 
-        btnNo.addEventListener('mouseover', moverNo);
-        btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); moverNo(); });
+    function safeConfetti(options) {
+      if (typeof window.confetti === 'function') {
+        window.confetti(options);
+      }
+    }
 
-        btnSi.addEventListener('click', () => {
-            document.getElementById('paso1').classList.add('hidden');
-            document.getElementById('paso2').classList.remove('hidden');
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    btnNo.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      moveNoButton();
+    });
+
+    btnSi.addEventListener('click', () => {
+      setStep(1);
+      safeConfetti({ particleCount: 180, spread: 90, origin: { y: 0.65 } });
+    });
+
+    giftBtn.addEventListener('click', () => {
+      setStep(2);
+      clearInterval(confettiLoop);
+      confettiLoop = setInterval(() => {
+        safeConfetti({
+          particleCount: 7,
+          angle: 60,
+          spread: 60,
+          origin: { x: 0 },
+          colors: ['#ff2e75', '#ff92bb', '#ff4f8e']
         });
-
-        regalo.addEventListener('click', () => {
-            document.getElementById('paso2').classList.add('hidden');
-            document.getElementById('paso3').classList.remove('hidden');
-            
-            // Lluvia de corazones
-            setInterval(() => {
-                confetti({
-                    particleCount: 7, angle: 60, spread: 55, origin: { x: 0 },
-                    colors: ['#ff0a54', '#ff477e']
-                });
-                confetti({
-                    particleCount: 7, angle: 120, spread: 55, origin: { x: 1 },
-                    colors: ['#ff0a54', '#ff477e']
-                });
-            }, 400);
+        safeConfetti({
+          particleCount: 7,
+          angle: 120,
+          spread: 60,
+          origin: { x: 1 },
+          colors: ['#ff2e75', '#ff92bb', '#ff4f8e']
         });
-    </script>
+      }, 380);
+    });
+
+    window.addEventListener('beforeunload', () => clearInterval(confettiLoop));
+  </script>
 </body>
 </html>
